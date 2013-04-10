@@ -1,7 +1,53 @@
 !!!
 %html
   %head
+    %meta{:charset => "utf-8"}
+
+    = csrf_meta_tags
+    = stylesheet_link_tag "application", :media => "all"
+
     %title Rails Template
 
   %body
+    / navbar
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %button.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          = link_to 'Boom!', root_url, :class => 'brand'
+          .nav-collapse.collapse
+            %ul.nav.pull-right
+              / - if not current_user
+              /   %li= link_to "Sign In", new_user_session_path
+              /   %li= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook)
+              /   %li= link_to "Sign Up", new_user_registration_path
+              / - else
+              /   %li= link_to 'Sign Out', destroy_user_session_path, :method => :delete
+              /   %li.user
+              /     %a{:href => edit_user_registration_path}
+              /       = current_user.name
+              /       %img{:src => "http://www.gravatar.com/avatar/#{current_user.gravatar_hash}?s=30"}
+
+    / notices and alerts
+    - if notice
+      .span12.alert.alert-success
+        %button.close{:type => :button, "data-dismiss" => :alert} &times;
+        = notice
+    - if alert
+      .span12.alert
+        %button.close{:type => :button, "data-dismiss" => :alert} &times;
+        = alert
+
+    / content
     = yield
+
+    / footer
+    %footer.footer
+      .container
+        %p
+          Copyright &copy;
+          = Time.now.year
+          Boom!
